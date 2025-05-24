@@ -14,6 +14,11 @@ import BarChart from "./pages/Charts/BarChart";
 import Calendar from "./pages/Calendar";
 import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
+// @ts-ignore
+import UserManagement from "./components/UserManagement"
+// @ts-ignore
+import ActivityLogs from "./components/ActivityLogs"
+
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
@@ -30,6 +35,7 @@ import TR4 from "./pages/Dashboard/TR4";
 // @ts-ignore
 import QuerySearch from "./pages/Dashboard/QuerySearch";
 import { AuthProvider, useAuth } from "./context/AuthContext"; // Import AuthProvider and useAuth
+//@ts-ignore
 import AdminPanel from "./pages/Admin/AdminPanel"; // Import AdminPanel component
 import ProtectedRoute from "./components/auth/ProtectedRoute"; // Import ProtectedRoute
 import Download from "./pages/Dashboard/Download";
@@ -68,9 +74,12 @@ function AppRoutes() {
             <Route path="/querysearch" element={<QuerySearch />} />
             <Route path="/download" element={<Download />} />
             <Route path="/blank" element={<Blank />} />
-            
+
             {/* Admin Routes */}
-            <Route path="/adminpanel" element={<AdminPanel />} /> {/* Add User Management route */}
+            <Route path="/usermanagement" element={<UserManagement />} /> {/* Add User Management route */}
+            <Route path="/activitylogs" element={<ActivityLogs />} /> {/* Add User Management route */}
+            
+
           </Route>
         </Route>
 

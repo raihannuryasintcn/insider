@@ -1,13 +1,46 @@
+import React, { useState, useEffect } from "react";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   BoxIconLine,
   GroupIcon,
 } from "../../icons";
-import { File } from "lucide-react"
+import { File, Download } from "lucide-react"
 import Badge from "../ui/badge/Badge";
+import Button from "../ui/button/Button";
+//@ts-ignore
+import { exportISPDataToExcel } from "../../utils/exportUtils"; // Import the export function
 
 export default function DonwloadExcel() {
+  // Move state and effect inside the component
+  const [ispData, setIspData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Allow error to be string or null
+
+  useEffect(() => {
+    const fetchISPData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(import.meta.env.VITE_ISP_API_URL);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch data: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setIspData(data);
+      } catch (err: any) { // Use 'any' for now to avoid complex error type handling
+        console.error("Error fetching ISP data:", err);
+        setError("Failed to load ISP data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchISPData();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-6">
       {/* <!-- Metric Item Start --> */}
@@ -25,9 +58,15 @@ export default function DonwloadExcel() {
               Data ISP
             </h4>
             <div className="mt-2">
-              <button className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-              Unduh
-              </button>
+              <Button
+                variant="primary" // Change variant back to outline
+                onClick={() =>
+                  exportISPDataToExcel(ispData) // Pass ispData to the export function
+                }>
+                <Download className="h-4 w-4 mr-2" />
+
+                Unduh
+              </Button>
             </div>
           </div>
           <Badge color="success">

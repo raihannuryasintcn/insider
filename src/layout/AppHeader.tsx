@@ -84,11 +84,13 @@ const AppHeader: React.FC = () => {
           </button>
 
           <Link to="/" className="lg:hidden">
-            <img
+
+
+            {/* <img
               className="dark:hidden"
               src="./images/logo/logo.svg"
               alt="Logo"
-            />
+            /> */}
             <img
               className="hidden dark:block"
               src="./images/logo/logo-dark.svg"
@@ -115,10 +117,6 @@ const AppHeader: React.FC = () => {
               />
             </svg>
           </button>
-                      <h3 className="font-hiragi">insiderAI</h3>
-                      <h3>insiderAI</h3>
-
-
           {/* <div className="hidden lg:block">
             <form>
               <div className="relative">

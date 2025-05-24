@@ -1,6 +1,7 @@
 import React from "react";
 import { Transition } from "@headlessui/react";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import Button from "./ui/button/Button";
 
 const FilterPanel = ({
   showFilterPanel,
@@ -152,19 +153,17 @@ const FilterPanel = ({
           </div>
         </div>
 
-        <div className="mt-4 flex justify-end">
-          <button
+        <div className="mt-4 flex justify-end gap-5">
+          <Button variant="outline"
             onClick={resetFilters}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors mr-2"
           >
             Reset Filters
-          </button>
-          <button
+          </Button>
+          <Button variant="primary"
             onClick={() => setShowFilterPanel(false)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             Apply Filters
-          </button>
+          </Button>
         </div>
       </div>
     </Transition>

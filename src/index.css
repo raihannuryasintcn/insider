@@ -1,24 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap")
 layer(base);
-
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: 'HiraginoKakuGothicStdW8';
-  src: url('/fonts/HiraginoKakuGothicStdW8.otf') format('opentype');
-  font-weight: normal;
+  font-family: 'Hiragino Kaku Gothic Std W8';
+  src: url('/fonts/HiraginoKakuGothicStdW8.woff') format('woff');
+  font-weight: 800;
   font-style: normal;
 }
-
-@custom-variant dark (&:is(.dark *));
 
 @theme {
   --font-*: initial;
   --font-outfit: Outfit, sans-serif;
-  --font-hiragino: HiraginoKakuGothicStdW8, sans-serif;
+  --font-hiragino: 'Hiragino Kaku Gothic Std W8', sans-serif;
 
   --breakpoint-*: initial;
+
   --breakpoint-2xsm: 375px;
   --breakpoint-xsm: 425px;
   --breakpoint-3xl: 2000px;

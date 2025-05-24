@@ -5,6 +5,8 @@ import useFetchISPData from "../../components/useFetchISPData";
 import useFilteredISPData from "../../components/useFilteredISPData";
 import FilterPanel from "../../components/FilterPanel";
 import ISPTable from "../../components/ISPTable";
+import Button from "../../components/ui/button/Button";
+import {Funnel} from 'lucide-react'
 
 const QuerySearch = () => {
   const [search, setSearch] = useState("");
@@ -61,24 +63,25 @@ const QuerySearch = () => {
 
   return (
     <div className="">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-4">
         <h1></h1>
-        <div className="flex gap-2">
-          <button
+        <div className="flex gap-4">
+          {/* <Button
             onClick={() =>
               exportISPDataToExcel(filteredISP, "Filtered_ISP_Data")
             }
-            className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="flex items-center bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
           >
-            <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
+            <ArrowDownTrayIcon className="h-5 w-5" />
             Download
-          </button>
-          <button
+          </Button> */}
+          <Button variant="primary"
             onClick={() => setShowFilterPanel(!showFilterPanel)}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
+           <Funnel className="h-4 w-4 mr-2" />
+
             Filters
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -89,7 +92,7 @@ const QuerySearch = () => {
           placeholder="Search ISP..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white"
         />
       </div>
 

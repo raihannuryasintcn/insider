@@ -108,51 +108,53 @@ export default function Maps() {
     <div className="h-full w-full relative">
       <PageMeta title="Territory Maps Dashboard" />
 
-      <MapContainer
-        center={initialPosition}
-        zoom={5}
-        scrollWheelZoom={true}
-        className="h-[470px] w-full"
-        style={{ height: "470px", width: "100%" }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-        />
-
-        {/* Render GeoJSON data */}
-        {geoJsonData && (
-          <GeoJSON
-            data={geoJsonData}
-            style={polygonStyle}
-            onEachFeature={onEachFeature}
-            key="geojson-territories"
+      {/* Wrap MapContainer in a responsive aspect ratio container */}
+      <div className="w-full h-auto aspect-[16/7] rounded-lg border border-gray-300">
+        <MapContainer
+          center={initialPosition}
+          zoom={5}
+          scrollWheelZoom={true}
+          className="w-full h-full" // Make MapContainer fill the parent div
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           />
-        )}
 
-        {/* Render labels if available - with proper validation */}
-        {labelPositions && labelPositions.length > 0 && labelPositions.map((pos, index) => {
-          // Double check each position before rendering
-          if (!pos || typeof pos.lat !== 'number' || typeof pos.lng !== 'number' ||
-              isNaN(pos.lat) || isNaN(pos.lng)) {
-            return null;
-          }
-
-          return (
-            <Marker
-              key={`label-${index}`}
-              position={[pos.lat, pos.lng]}
-              icon={L.divIcon({
-                className: 'text-label',
-                html: `<div style="background: rgba(255,255,255,0.8); padding: 2px 6px; border-radius: 3px; font-size: 12px; font-weight: bold; color: #333;">${pos.label || 'Unknown'}</div>`,
-                iconSize: [60, 20],
-                iconAnchor: [30, 10]
-              })}
+          {/* Render GeoJSON data */}
+          {geoJsonData && (
+            <GeoJSON
+              data={geoJsonData}
+              style={polygonStyle}
+              onEachFeature={onEachFeature}
+              key="geojson-territories"
             />
-          );
-        })}
+          )}
 
-      </MapContainer>
+          {/* Render labels if available - with proper validation */}
+          {labelPositions && labelPositions.length > 0 && labelPositions.map((pos, index) => {
+            // Double check each position before rendering
+            if (!pos || typeof pos.lat !== 'number' || typeof pos.lng !== 'number' ||
+                isNaN(pos.lat) || isNaN(pos.lng)) {
+              return null;
+            }
+
+            return (
+              <Marker
+                key={`label-${index}`}
+                position={[pos.lat, pos.lng]}
+                icon={L.divIcon({
+                  className: 'text-label',
+                  html: `<div style="background: rgba(255,255,255,0.8); padding: 2px 6px; border-radius: 3px; font-size: 12px; font-weight: bold; color: #333;">${pos.label || 'Unknown'}</div>`,
+                  iconSize: [60, 20],
+                  iconAnchor: [30, 10]
+                })}
+              />
+            );
+          })}
+
+        </MapContainer>
+      </div>
 
       {/* Legend */}
       <div className="absolute top-4 right-4 z-[1000] bg-white/80 shadow-lg rounded-sm py-1 p-2 min-w-[60px]">
@@ -179,5 +181,6 @@ export default function Maps() {
         })}
       </div>
     </div>
+
   );
 }
