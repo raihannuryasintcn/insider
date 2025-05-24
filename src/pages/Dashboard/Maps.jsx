@@ -1,213 +1,183 @@
 import PageMeta from "../../components/common/PageMeta";
 import { useEffect, useState } from "react";
 
-import { MapContainer, TileLayer, Marker, Popup, GeoJSON, useMap } from "react-leaflet"; // Import useMap
+import { MapContainer, TileLayer, Marker, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import geoData from "../../../listgeodata.json"; // Assuming this path is correct
+import geoData from "../../../listgeodata.json";
 import L from 'leaflet'; // Import Leaflet library
-import { calculateLabelPositions } from "../../utils/mapUtils"; // Import the new function
+
+import { convertToGeoJSON, groupColors, ispData, tregGroupMapping } from "../../utils/mapDataUtils";
+import { calculateLabelPositions } from "../../utils/mapUtils"; // Keep this import
+import { createPolygonStyle, createOnEachFeature } from "../../utils/mapInteractions";
+
 
 // Center position of Indonesia
 const initialPosition = [-1.0489, 118.0149];
 
-// Convert our data to proper GeoJSON format
-const convertToGeoJSON = (data) => {
-  if (!data || !data.d || !data.d.data) {
-    console.error("Invalid geoData structure:", data);
-    return { type: "FeatureCollection", features: [] };
-  }
-  return {
-    type: "FeatureCollection",
-    features: data.d.data.map(item => ({
-      type: "Feature",
-      id: item.alias,
-      properties: {
-        alias: item.alias,
-        code: item.code
-      },
-      geometry: {
-        ...item.geom,
-        // Make sure we have a proper type
-        type: item.geom ? (item.geom.type || "MultiPolygon") : "MultiPolygon" // Handle potential missing geom
-      }
-    }))
-  };
-};
-
-// Define the color mapping for specific aliases
-const aliasColors = {
-  "TR1": "blue",
-  "TR2": "purple",
-  "TR3": "green",
-  "TR4": "gray",
-  // Add a default color for aliases not in the map
-  "default": "#ffffff" // A default white color
-};
-// Placeholder ISP data (replace with actual data fetching logic)
-const placeholderIspData = {
-  "TR1": { territory:"TR1", total: 250, licensed: 200 },
-  "TR2": { territory:"TR2", total: 180, licensed: 150 },
-  "TR3": { territory:"TR3", total: 300, licensed: 280 },
-  "TR4": { territory:"TR4", total: 120, licensed: 100 },
-};
-
 
 export default function Maps() {
   const [geoJsonData, setGeoJsonData] = useState(null);
+  const [groupedFeatures, setGroupedFeatures] = useState({});
   const [labelPositions, setLabelPositions] = useState([]);
-  const [hoveredAlias, setHoveredAlias] = useState(null); // State to track hovered alias
-
+  const [hoveredTregGroup, setHoveredTregGroup] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Convert the data to proper GeoJSON format when component mounts
-    const formattedData = convertToGeoJSON(geoData);
-    setGeoJsonData(formattedData);
+    try {
+      setLoading(true);
 
-    // Calculate label positions using the new function
-    const positions = calculateLabelPositions(formattedData);
-    setLabelPositions(positions);
+      // Convert the data to proper GeoJSON format
+      const formattedData = convertToGeoJSON(geoData);
 
-  }, []); // Empty dependency array, runs only once on mount
+      if (!formattedData.features.length) {
+        throw new Error("No valid features found in geo data");
+      }
 
+      setGeoJsonData(formattedData);
 
-  // Style function for the GeoJSON polygons
-  const polygonStyle = (feature) => {
-    const alias = feature.properties.alias;
-    // Get the color from the aliasColors map, defaulting to the "default" color
-    const fillColor = aliasColors[alias] || aliasColors.default;
+      // Group features by combined TREG codes
+      const grouped = {};
+      formattedData.features.forEach(feature => {
+        const tregCode = feature.properties.code;
+        const group = tregGroupMapping[tregCode] || tregCode;
 
-    return {
-      fillColor: fillColor,
-      weight: 2,
-      opacity: 1,
-      color: "white",
-      dashArray: "3",
-      fillOpacity: 0.7,
-    };
-  };
+        if (!grouped[group]) {
+          grouped[group] = [];
+        }
+        grouped[group].push(feature);
+      });
+      setGroupedFeatures(grouped);
 
-  // Function to handle mouseover event on GeoJSON features
-  const handleFeatureMouseOver = (event) => {
-    const layer = event.target;
-    const alias = layer.feature.properties.alias;
-    setHoveredAlias(alias); // Set hovered alias
+      // Calculate label positions for territories - with error handling
+      try {
+        const positions = calculateLabelPositions(formattedData);
+        // Validate positions before setting
+        const validPositions = positions.filter(pos =>
+          pos &&
+          typeof pos.lat === 'number' &&
+          typeof pos.lng === 'number' &&
+          !isNaN(pos.lat) &&
+          !isNaN(pos.lng)
+        );
+        setLabelPositions(validPositions);
+        console.log("Calculated label positions:", validPositions); // Keep log for debugging if needed
+      } catch (labelError) {
+        console.warn("Error calculating label positions:", labelError);
+        setLabelPositions([]); // Set empty array if label calculation fails
+      }
 
-    // Highlight the feature (optional, but good for user feedback)
-    layer.setStyle({
-      weight: 2,
-      color: '#666',
-      dashArray: '',
-      fillOpacity: 0.9
-    });
-  };
-
-  // Function to handle mouseout event on GeoJSON features
-  const handleFeatureMouseOut = (event) => {
-    setHoveredAlias(null); // Clear hovered alias
-    // Reset the style to the default
-    event.target.setStyle(polygonStyle(event.target.feature));
-  };
-
-  // Function to handle click event on GeoJSON features (optional)
-  const handleFeatureClick = (event) => {
-    const alias = event.target.feature.properties.alias;
-    const ispData = placeholderIspData[alias];
-    if (ispData) {
-      console.log(`Clicked on ${alias}: Total ${ispData.total}, Licensed ${ispData.licensed}`);
-      // You could potentially open a modal or navigate to a detail page here
+      setLoading(false);
+    } catch (err) {
+      console.error("Error processing geo data:", err);
+      setError(err.message);
+      setLoading(false);
     }
-  };
+  }, []);
+
+  // Create styled and onEachFeature functions using the factory functions
+  const polygonStyle = createPolygonStyle(groupColors, tregGroupMapping, hoveredTregGroup);
+  const onEachFeature = createOnEachFeature(L, ispData, tregGroupMapping, setHoveredTregGroup);
 
 
-  // Function to add event listeners to each feature
-  const onEachFeature = (feature, layer) => {
-    layer.on({
-      mouseover: handleFeatureMouseOver,
-      mouseout: handleFeatureMouseOut,
-      click: handleFeatureClick, // Optional click handler
-    });
-  };
+  // Loading state
+  if (loading) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading map data...</p>
+        </div>
+      </div>
+    );
+  }
 
+  // Error state
+  if (error) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <div className="text-center text-red-600">
+          <p className="text-lg font-semibold mb-2">Error loading map</p>
+          <p className="text-sm">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="h-full w-full">
-      <PageMeta title="Ecommerce Dashboard" />
+    <div className="h-full w-full relative">
+      <PageMeta title="Territory Maps Dashboard" />
+
       <MapContainer
         center={initialPosition}
         zoom={5}
         scrollWheelZoom={true}
         className="h-[470px] w-full"
+        style={{ height: "470px", width: "100%" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         />
 
-
-        {/* Render GeoJSON data if it's available */}
+        {/* Render GeoJSON data */}
         {geoJsonData && (
           <GeoJSON
             data={geoJsonData}
             style={polygonStyle}
-            onEachFeature={onEachFeature} // Add event listeners
-            key={`geojson-${Date.now()}`} // Ensure re-render if data changes
+            onEachFeature={onEachFeature}
+            key="geojson-territories"
           />
         )}
 
-        {/* Render ISP data labels on hover */}
-        {labelPositions.map(({ alias, position }) => {
-          // Only render marker if the alias matches the hovered alias
-          if (alias === hoveredAlias) {
-            const ispData = placeholderIspData[alias];
-            if (!ispData) return null; // Don't render if no data for alias
-
-            const customIcon = L.divIcon({
-              className: 'isp-label-icon', // Custom class for styling
-              html: `<div class="bg-white/70 p-1 shadow text-xs">
-                       ${ispData.territory}<br>Total ISP: ${ispData.total}<br>Licensed: ${ispData.licensed}
-                     </div>`,
-              iconSize: [100, 30], // Adjust size as needed
-              iconAnchor: [50, 15], // Anchor the icon in the center
-            });
-
-            return (
-              <Marker key={alias} position={position} icon={customIcon}>
-                {/* Optional: Add a popup with more details */}
-                {/* <Popup>
-                  <div>
-                    <h4>${alias}</h4>
-                    <p>Total ISPs: ${ispData.total}</p>
-                    <p>Licensed ISPs: ${ispData.licensed}</p>
-                  </div>
-                </Popup> */}
-              </Marker>
-            );
+        {/* Render labels if available - with proper validation */}
+        {labelPositions && labelPositions.length > 0 && labelPositions.map((pos, index) => {
+          // Double check each position before rendering
+          if (!pos || typeof pos.lat !== 'number' || typeof pos.lng !== 'number' ||
+              isNaN(pos.lat) || isNaN(pos.lng)) {
+            return null;
           }
-          return null; // Don't render marker if not hovered
+
+          return (
+            <Marker
+              key={`label-${index}`}
+              position={[pos.lat, pos.lng]}
+              icon={L.divIcon({
+                className: 'text-label',
+                html: `<div style="background: rgba(255,255,255,0.8); padding: 2px 6px; border-radius: 3px; font-size: 12px; font-weight: bold; color: #333;">${pos.label || 'Unknown'}</div>`,
+                iconSize: [60, 20],
+                iconAnchor: [30, 10]
+              })}
+            />
+          );
         })}
-
-
-        {/* Legend */}
-        <div className="absolute top-4 right-4 z-[1000] bg-white/70 pt-1 pb-0.5 px-2 shadow-md">
-          {/* <h4 className="text-lg font-semibold mb-2">Legend</h4> */}
-          {Object.entries(aliasColors).map(([alias, color]) => {
-            // Don't include the default color in the legend
-            if (alias === "default") return null;
-            return (
-              <div key={alias} className="flex items-center mb-0.5">
-                <div
-                  className="w-2 h-2 mr-1 "
-                  style={{ backgroundColor: color }}
-                ></div>
-                <span className="text-xs">{alias}</span>
-              </div>
-            );
-          })}
-        </div>
 
       </MapContainer>
 
-      {/* Your other components */}
+      {/* Legend */}
+      <div className="absolute top-4 right-4 z-[1000] bg-white/80 shadow-lg rounded-sm py-1 p-2 min-w-[60px]">
+        {/* <h4 className="text-sm font-semibold mb-0.5 text-gray-700">Territories</h4> */}
+        {Object.entries(groupColors).map(([group, color]) => {
+          if (group === "default") return null;
+
+          const territoryData = ispData[group];
+
+          return (
+            <div
+              key={group}
+              className={`flex items-center mb-0.5 rounded cursor-pointer transition-colors hover:bg-gray-50`}
+            >
+              <div
+                className="w-3 h-3 mr-2 border border-gray-300 rounded-sm"
+                style={{ backgroundColor: color }}
+              />
+              <div className="flex-1">
+                <div className="text-xs font-medium text-gray-700">{group}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
