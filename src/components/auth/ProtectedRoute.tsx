@@ -7,7 +7,7 @@ const ProtectedRoute: React.FC = () => {
 
   if (!user) {
     // User is not authenticated, redirect to sign-in page
-    return <Navigate to="/signin" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   // User is authenticated, render the child routes

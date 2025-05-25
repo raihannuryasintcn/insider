@@ -19,7 +19,7 @@ export default function UserDropdown() {
   const handleSignOut = () => {
     logout(); // Use logout function from AuthContext
     closeDropdown();
-    navigate("/signin"); // Navigate to sign-up page after logout
+    navigate("/login"); // Navigate to sign-up page after logout
   };
 
   return (
