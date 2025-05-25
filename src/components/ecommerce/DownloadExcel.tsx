@@ -12,10 +12,9 @@ import Button from "../ui/button/Button";
 import { exportISPDataToExcel } from "../../utils/exportUtils"; // Import the export function
 
 export default function DonwloadExcel() {
-  // Move state and effect inside the component
   const [ispData, setIspData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null); // Allow error to be string or null
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchISPData = async () => {
@@ -30,7 +29,7 @@ export default function DonwloadExcel() {
 
         const data = await response.json();
         setIspData(data);
-      } catch (err: any) { // Use 'any' for now to avoid complex error type handling
+      } catch (err: any) {
         console.error("Error fetching ISP data:", err);
         setError("Failed to load ISP data. Please try again later.");
       } finally {
@@ -59,12 +58,11 @@ export default function DonwloadExcel() {
             </h4>
             <div className="mt-2">
               <Button
-                variant="primary" // Change variant back to outline
+                variant="primary"
                 onClick={() =>
-                  exportISPDataToExcel(ispData) // Pass ispData to the export function
+                  exportISPDataToExcel(ispData)
                 }>
                 <Download className="h-4 w-4 mr-2" />
-
                 Unduh
               </Button>
             </div>

@@ -1,1 +1,0 @@
-export declare const exportISPDataToExcel: (dataToExport: any[], filename?: string) => Promise<void>;

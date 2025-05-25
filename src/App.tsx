@@ -1,25 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Import from react-router-dom
-import SignIn from "./pages/AuthPages/SignIn";
-import SignUp from "./pages/AuthPages/SignUp";
+import LogIn from "./pages/AuthPages/LogIn";
 import NotFound from "./pages/OtherPage/NotFound";
-import UserProfiles from "./pages/UserProfiles";
-import Videos from "./pages/UiElements/Videos";
-import Images from "./pages/UiElements/Images";
-import Alerts from "./pages/UiElements/Alerts";
-import Badges from "./pages/UiElements/Badges";
-import Avatars from "./pages/UiElements/Avatars";
-import Buttons from "./pages/UiElements/Buttons";
-import LineChart from "./pages/Charts/LineChart";
-import BarChart from "./pages/Charts/BarChart";
-import Calendar from "./pages/Calendar";
-import BasicTables from "./pages/Tables/BasicTables";
-import FormElements from "./pages/Forms/FormElements";
 // @ts-ignore
 import UserManagement from "./components/UserManagement"
 // @ts-ignore
 import ActivityLogs from "./components/ActivityLogs"
 
-import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 // @ts-ignore
@@ -35,10 +21,10 @@ import TR4 from "./pages/Dashboard/TR4";
 // @ts-ignore
 import QuerySearch from "./pages/Dashboard/QuerySearch";
 import { AuthProvider, useAuth } from "./context/AuthContext"; // Import AuthProvider and useAuth
-//@ts-ignore
-import AdminPanel from "./pages/Admin/AdminPanel"; // Import AdminPanel component
 import ProtectedRoute from "./components/auth/ProtectedRoute"; // Import ProtectedRoute
 import Download from "./pages/Dashboard/Download";
+// Biasanya di src/index.js atau App.js
+import 'leaflet/dist/leaflet.css';
 
 export default function App() {
   return (
@@ -73,7 +59,6 @@ function AppRoutes() {
             {/* Others Page */}
             <Route path="/querysearch" element={<QuerySearch />} />
             <Route path="/download" element={<Download />} />
-            <Route path="/blank" element={<Blank />} />
 
             {/* Admin Routes */}
             <Route path="/usermanagement" element={<UserManagement />} /> {/* Add User Management route */}
@@ -84,7 +69,7 @@ function AppRoutes() {
         </Route>
 
         {/* Auth Layout */}
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/login" element={<LogIn />} />
         {/* <Route path="/signup" element={<SignUp />} /> */}
 
         {/* Fallback Route */}

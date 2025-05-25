@@ -1,6 +1,4 @@
-import React from "react";
 import { Transition } from "@headlessui/react";
-import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Button from "./ui/button/Button";
 
 const FilterPanel = ({

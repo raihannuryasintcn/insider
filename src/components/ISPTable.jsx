@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import {
   BuildingOfficeIcon,
   IdentificationIcon,
@@ -8,7 +8,7 @@ import {
   DocumentCheckIcon,
 } from "@heroicons/react/24/outline";
 
-const ISPTable = ({ filteredISP }) => {
+const ISPTable = memo(({ filteredISP }) => {
   const [expandedId, setExpandedId] = useState(null);
 
   return (
@@ -142,131 +142,131 @@ const ISPTable = ({ filteredISP }) => {
                               Contact Information
                             </h3>
                             <div>
+                              <p className="text-sm font-medium text-gray-500">
+                                Phone
+                              </p>
+                              <p className="text-sm text-gray-900 mt-1">
+                                {isp.phone || "N/A"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Column */}
+                        <div className="space-y-6">
+                          {/* Service Status */}
+                          <div className="bg-white p-4 rounded-lg shadow-sm">
+                            <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                              <DocumentCheckIcon className="h-5 w-5 mr-2 text-blue-600" />
+                              Service Status
+                            </h3>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
                                 <p className="text-sm font-medium text-gray-500">
-                                  Phone
+                                  JARTUP
                                 </p>
                                 <p className="text-sm text-gray-900 mt-1">
-                                  {isp.phone || "N/A"}
+                                  {isp.is_jartup ? "Yes" : "No"}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                  JARTAPLOK
+                                </p>
+                                <p className="text-sm text-gray-900 mt-1">
+                                  {isp.is_jartaplok ? "Yes" : "No"}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                  Kominfo ISP
+                                </p>
+                                <p className="text-sm text-gray-900 mt-1">
+                                  {isp.is_kominfo_isp ? "Yes" : "No"}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                  Customer
+                                </p>
+                                <p className="text-sm text-gray-900 mt-1">
+                                  {isp.is_customer ? "Yes" : "No"}
                                 </p>
                               </div>
                             </div>
                           </div>
 
-                          {/* Right Column */}
-                          <div className="space-y-6">
-                            {/* Service Status */}
-                            <div className="bg-white p-4 rounded-lg shadow-sm">
-                              <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                                <DocumentCheckIcon className="h-5 w-5 mr-2 text-blue-600" />
-                                Service Status
-                              </h3>
-                              <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    JARTUP
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.is_jartup ? "Yes" : "No"}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    JARTAPLOK
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.is_jartaplok ? "Yes" : "No"}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    Kominfo ISP
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.is_kominfo_isp ? "Yes" : "No"}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    Customer
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.is_customer ? "Yes" : "No"}
-                                  </p>
-                                </div>
+                          {/* Performance Metrics */}
+                          <div className="bg-white p-4 rounded-lg shadow-sm">
+                            <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                              <ChartBarIcon className="h-5 w-5 mr-2 text-blue-600" />
+                              Performance Metrics
+                            </h3>
+                            <div className="space-y-4">
+                              <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                  Risk Profile
+                                </p>
+                                <p className="text-sm text-gray-900 mt-1">
+                                  {isp.internal_risk_profile || "N/A"}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                  Collection Rate
+                                </p>
+                                <p className="text-sm text-gray-900 mt-1">
+                                  {isp.collection_rate || "N/A"}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                  Customer Coverage
+                                </p>
+                                <p className="text-sm text-gray-900 mt-1">
+                                  {isp.coverage_customer || "N/A"}
+                                </p>
                               </div>
                             </div>
+                          </div>
 
-                            {/* Performance Metrics */}
-                            <div className="bg-white p-4 rounded-lg shadow-sm">
-                              <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                                <ChartBarIcon className="h-5 w-5 mr-2 text-blue-600" />
-                                Performance Metrics
-                              </h3>
-                              <div className="space-y-4">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    Risk Profile
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.internal_risk_profile || "N/A"}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    Collection Rate
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.collection_rate || "N/A"}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    Customer Coverage
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.coverage_customer || "N/A"}
-                                  </p>
-                                </div>
+                          {/* Location Information */}
+                          <div className="bg-white p-4 rounded-lg shadow-sm">
+                            <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                              <MapPinIcon className="h-5 w-5 mr-2 text-blue-600" />
+                              Location Information
+                            </h3>
+                            <div className="space-y-4">
+                              <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                  Province
+                                </p>
+                                <p className="text-sm text-gray-900 mt-1">
+                                  {isp.province || "N/A"}
+                                </p>
                               </div>
-                            </div>
-
-                            {/* Location Information */}
-                            <div className="bg-white p-4 rounded-lg shadow-sm">
-                              <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                                <MapPinIcon className="h-5 w-5 mr-2 text-blue-600" />
-                                Location Information
-                              </h3>
-                              <div className="space-y-4">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    Province
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.province || "N/A"}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-500">
-                                    Coverage Lists
-                                  </p>
-                                  <p className="text-sm text-gray-900 mt-1">
-                                    {isp.coverage_lists || "N/A"}
-                                  </p>
-                                </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                  Coverage Lists
+                                </p>
+                                <p className="text-sm text-gray-900 mt-1">
+                                  {isp.coverage_lists || "N/A"}
+                                </p>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
-};
+});
 
 export default ISPTable;

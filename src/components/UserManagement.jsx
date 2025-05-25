@@ -258,6 +258,7 @@ const UserManagement = () => {
                     </Button>
                     <Button
                       variant="outline"
+                      
                       onClick={() => handleDelete(user.username)}
                     >
                       <Trash2 className="h-4 w-4 mr-1" />

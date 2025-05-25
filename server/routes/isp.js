@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/database');
+const { getIspSummary } = require('../controllers/ispController');
 
 // Get all ISP data
 router.get('/', async (req, res) => {
@@ -25,4 +26,6 @@ router.get('/unique/:field', async (req, res) => {
   }
 });
 
-module.exports = router; 
+router.get('/summary', getIspSummary);
+
+module.exports = router;
