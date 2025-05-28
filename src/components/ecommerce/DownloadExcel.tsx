@@ -1,10 +1,4 @@
-import React, { useState, useEffect } from "react";
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  BoxIconLine,
-  GroupIcon,
-} from "../../icons";
+import { useState, useEffect } from "react";
 import { File, Download } from "lucide-react"
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
@@ -13,15 +7,10 @@ import { exportISPDataToExcel } from "../../utils/exportUtils"; // Import the ex
 
 export default function DonwloadExcel() {
   const [ispData, setIspData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchISPData = async () => {
       try {
-        setLoading(true);
-        setError(null);
-
         const response = await fetch(import.meta.env.VITE_ISP_API_URL);
         if (!response.ok) {
           throw new Error(`Failed to fetch data: ${response.status}`);
@@ -31,9 +20,6 @@ export default function DonwloadExcel() {
         setIspData(data);
       } catch (err: any) {
         console.error("Error fetching ISP data:", err);
-        setError("Failed to load ISP data. Please try again later.");
-      } finally {
-        setLoading(false);
       }
     };
 

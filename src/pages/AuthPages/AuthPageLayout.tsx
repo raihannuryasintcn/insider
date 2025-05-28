@@ -1,7 +1,6 @@
 import React from "react";
 import GridShape from "../../components/common/GridShape";
 import { Link } from "react-router";
-import ThemeTogglerTwo from "../../components/common/ThemeTogglerTwo";
 
 export default function AuthLayout({
   children,
@@ -21,18 +20,19 @@ export default function AuthLayout({
                 <img
                   width={231}
                   height={48}
-                  src="/images/logo/auth-logo.svg"
+                  src="/images/infranexia-white.png"
                   alt="Logo"
                 />
               </Link>
+
               <p className="text-center text-gray-400 dark:text-white/60">
-                Free and Open-Source Tailwind CSS Admin Dashboard Template
+                Power BI and Data Analytics Dashboard for Internet Service Provider
               </p>
             </div>
           </div>
         </div>
         <div className="fixed z-50 hidden bottom-6 right-6 sm:block">
-          <ThemeTogglerTwo />
+          {/* <ThemeTogglerTwo /> */}
         </div>
       </div>
     </div>

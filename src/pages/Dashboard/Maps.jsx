@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 export default function Maps() {
   const [geoData, setGeoData] = useState(null);
   const [totalIsp, setTotalIsp] = useState(0);
+  const [totalJartup, setTotalJartup] = useState(0);
+  const [totalJartaplok, setTotalJartaplok] = useState(0);
 
   useEffect(() => {
     Promise.all([
@@ -20,12 +22,21 @@ export default function Maps() {
           const provName = feature.properties.name;
           const info = ispData[provName];
           feature.properties.total_isp = info ? info.total_isp : 0;
+          // Add jartup and jartaplok data to geojson properties if needed for tooltips or styling
+          feature.properties.total_jartup = info ? info.total_jartup : 0;
+          feature.properties.total_jartaplok = info ? info.total_jartaplok : 0;
         });
         setGeoData(geojson);
 
-        // Calculate total ISP
-        const total = Object.values(ispData).reduce((sum, info) => sum + (info ? info.total_isp : 0), 0);
+        // Calculate total ISP, JARTUP, and JARTAPLOK
+        const ispSummaryValues = Object.values(ispData);
+        const total = ispSummaryValues.reduce((sum, info) => sum + (info ? info.total_isp : 0), 0);
+        const jartupTotal = ispSummaryValues.reduce((sum, info) => sum + (info ? info.total_jartup : 0), 0);
+        const jartaplokTotal = ispSummaryValues.reduce((sum, info) => sum + (info ? info.total_jartaplok : 0), 0);
+
         setTotalIsp(total);
+        setTotalJartup(jartupTotal);
+        setTotalJartaplok(jartaplokTotal);
       });
   }, []);
 
@@ -37,9 +48,9 @@ export default function Maps() {
   });
 
   const onEachFeature = (feature, layer) => {
-    const { name, region, total_isp } = feature.properties;
+    const { name, region, total_isp, total_jartup, total_jartaplok } = feature.properties;
     layer.bindTooltip(
-      `<strong>${name}</strong><br/>Region: ${region}<br/>Total ISP: ${total_isp}`,
+      `<strong>${name}</strong><br/>Region: ${region}<br/>Jumlah ISP: ${total_isp}<br/>Jumlah JARTUP: ${total_jartup}<br/>Jumlah JARTAPLOK: ${total_jartaplok}`,
       { sticky: true }
     );
   };
@@ -60,7 +71,7 @@ export default function Maps() {
             <>
               <GeoJSON data={geoData} style={styleByFeature} onEachFeature={onEachFeature} />
               <LegendControl />
-              <TotalIspControl totalIsp={totalIsp} />
+              <TotalIspControl totalIsp={totalIsp} totalJartup={totalJartup} totalJartaplok={totalJartaplok} />
             </>
           )}
 

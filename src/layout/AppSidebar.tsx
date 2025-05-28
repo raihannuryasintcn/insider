@@ -2,25 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 
 // Assume these icons are imported from an icon library
-import {
-  BoxCubeIcon,
-  CalenderIcon,
-  ChevronDownIcon,
-  GridIcon,
-  HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
-  UserCircleIcon,
-} from "../icons";
+import { ChevronDownIcon, HorizontaLDots } from "../icons";
 
 import { MapPinned, Map, Search, Download, Users } from "lucide-react"; // Import Users icon
 
 import { useSidebar } from "../context/SidebarContext";
-import SidebarWidget from "./SidebarWidget";
-import { useAuth } from "../context/AuthContext"; // Import useAuth hook
 
 type NavItem = {
   name: string;
@@ -32,11 +18,11 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <Map />,
-    name: "Maps",
+    name: "Nasional",
     path: "/",
   },
   {
-    name: "Detail Territory",
+    name: "Territory",
     icon: <MapPinned />,
     subItems: [
       { name: "Territory 1", path: "/tr1", pro: false },
@@ -70,7 +56,6 @@ const othersItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
-  const { user } = useAuth(); // Use the useAuth hook
   const location = useLocation();
 
   const [openSubmenu, setOpenSubmenu] = useState<{
@@ -284,7 +269,7 @@ const AppSidebar: React.FC = () => {
                     width={40}
                     height={40}
                   />
-                  <span className="dark:hidden font-hiragino text-3xl font-extrabold">
+                  <span className="dark:hidden font-hiragino text-gray-800 text-3xl font-extrabold">
                     Insider
                   </span>
                 </div>

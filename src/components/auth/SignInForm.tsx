@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
+import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
@@ -23,7 +22,7 @@ export default function SignInForm() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:3000/api/auth/login", {
+      const response = await axios.post(import.meta.env.VITE_LOGIN_API_URL, {
         username: email,
         password,
       });
@@ -47,11 +46,18 @@ export default function SignInForm() {
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
-            <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Sign In
+            <img
+              className="ml-8"
+              src="/images/insider-icon.svg"
+              alt="Logo"
+              width={60}
+              height={120}
+            />
+            <h1 className="mb-2 font-hiragino font-extrabold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
+              Insider
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your username and password to sign in!
+              Enter your username and password to login!
             </p>
           </div>
           <div>
@@ -62,7 +68,7 @@ export default function SignInForm() {
                     Username <span className="text-error-500">*</span>{" "}
                   </Label>
                   <Input
-                    placeholder="info@gmail.com"
+                    placeholder="username"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -101,7 +107,7 @@ export default function SignInForm() {
                 </div>
                 <div>
                   <Button className="w-full" size="sm" type="submit">
-                    Sign in
+                    Log in
                   </Button>
                 </div>
               </div>
