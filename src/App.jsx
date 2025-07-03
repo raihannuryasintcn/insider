@@ -1,23 +1,19 @@
-import { useState } from 'react'
-import './App.css'
-import Layout from './layout'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import TR1 from './pages/TR1'
-import TR2 from './pages/TR2'
-import TR3 from './pages/TR3'
-import TR4 from './pages/TR4'
-import ListISP from './pages/ListIsp'
-import Download from './pages/Download'
-import Login from './pages/Login'
-import UserManagement from './UserManagement' 
-import ActivityLogs from './ActivityLogs'     
-import { AuthProvider, ProtectedRoute, AdminProtectedRoute } from './components/Auth' // Import AdminProtectedRoute
-
+import Layout from './Layout';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/Home';
+import TR1Page from './pages/TR1';
+import TR2Page from './pages/TR2';
+import TR3Page from './pages/TR3';
+import TR4Page from './pages/TR4';
+import ListIspPage from './pages/ListIsp';
+import DownloadPage from './pages/Download';
+import LoginPage from './pages/Login';
+import UserManagementPage from './pages/UserManagement';
+import ActivityLogsPage from './pages/ActivityLogs';   
+import FunnelPage from './pages/Funnel'; 
+import { AuthProvider, ProtectedRoute, AdminProtectedRoute } from './auth/Auth';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <BrowserRouter>
@@ -25,27 +21,30 @@ function App() {
           <Routes>
             <Route element={<ProtectedRoute />}>
               <Route element={<Layout />}>
-                <Route path='/' element={<Home />} />
-                <Route path='/tr-1' element={<TR1 />} />
-                <Route path='/tr-2' element={<TR2 />} />
-                <Route path='/tr-3' element={<TR3 />} />
-                <Route path='/tr-4' element={<TR4 />} />
-                <Route path='/list-isp' element={<ListISP />} />
-                <Route path='/download' element={<Download />} />
+                <Route path='/' element={<HomePage />} />
+                <Route path='/tr1' element={<TR1Page />} />
+                <Route path='/tr2' element={<TR2Page />} />
+                <Route path='/tr3' element={<TR3Page />} />
+                <Route path='/tr4' element={<TR4Page />} />
+                <Route path='/list-isp' element={<ListIspPage />} />
+                <Route path='/download' element={<DownloadPage />} />
+                <Route path='/funnel' element={<FunnelPage />} />
+
                 {/* Admin Protected Routes */}
                 <Route element={<AdminProtectedRoute />}>
-                  <Route path='/user-management' element={<UserManagement />} />
-                  <Route path='/activity-logs' element={<ActivityLogs />} />
+                  <Route path='/user-management' element={<UserManagementPage />} />
+                  <Route path='/activity-logs' element={<ActivityLogsPage />} />
                 </Route>
+
               </Route>
             </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path='*' element={<Login />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path='*' element={<LoginPage />} /> {/* Redirect ke login jika rute tidak ditemukan */}
           </Routes>
         </AuthProvider>
       </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

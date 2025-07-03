@@ -1,13 +1,7 @@
 const { logger } = require('../utils/logger');
 const { AppError } = require('../utils/errors');
 
-/**
- * Global error handling middleware
- * @param {Error} err - The error object
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
- */
+
 const errorHandler = (err, req, res, next) => {
     logger.error('Error:', {
         message: err.message,

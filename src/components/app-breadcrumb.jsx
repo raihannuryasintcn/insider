@@ -48,5 +48,5 @@ export function AppBreadcrumb() {
 function formatLabel(path) {
     return path
         .replace(/-/g, ' ')
-        .replace(/\b\w/g, l => l.toUpperCase())
+        .toUpperCase()
 }

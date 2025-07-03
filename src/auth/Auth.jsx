@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { Loading } from './custom/loading';
+import Loading from '../components/custom/Loading';
 
 const AuthContext = createContext(undefined);
 

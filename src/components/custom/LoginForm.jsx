@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/components/Auth"; // pastikan hook ini ada dan benar
+import { useAuth } from "@/auth/Auth"; // pastikan hook ini ada dan benar
 
 export default function LoginForm({ className, ...props }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -32,21 +32,21 @@ export default function LoginForm({ className, ...props }) {
       if (primaryUrl) {
         try {
           response = await axios.post(primaryUrl, {
-            username: email,
+            username: username,
             password,
           });
         } catch (primaryError) {
           console.log("Primary server failed, trying localhost...");
           // Jika server env gagal, coba localhost
           response = await axios.post(fallbackUrl, {
-            username: email,
+            username: username,
             password,
           });
         }
       } else {
         // Jika tidak ada env, langsung ke localhost
         response = await axios.post(fallbackUrl, {
-          username: email,
+          username: username,
           password,
         });
       }
@@ -66,7 +66,8 @@ export default function LoginForm({ className, ...props }) {
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
+      
+      <Card className="overflow-hidden p-0 border-none">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
@@ -85,18 +86,17 @@ export default function LoginForm({ className, ...props }) {
                   id="username"
                   type="text"
                   placeholder="Username"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
               <div className="grid gap-3">
-                <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                </div>
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
+                  placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

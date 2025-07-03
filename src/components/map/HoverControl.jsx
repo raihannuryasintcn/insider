@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 
-export default function TotalIspControl({ totalIsp, totalJartup, totalJartaplok }) {
+export default function HoverControl({ totalIsp, totalJartup, totalJartaplok }) {
   const map = useMap();
 
   useEffect(() => {

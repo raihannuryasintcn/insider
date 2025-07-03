@@ -53,7 +53,7 @@ const loginUser = async (username, password, ipAddress) => {
 const getAllUsers = async () => {
     try {
         const result = await db.query(
-            'SELECT user_id, username, role, created_at FROM users ORDER BY created_at DESC'
+            'SELECT user_id, username, role, created_at FROM users WHERE (deleted_at IS NULL OR is_active = true) ORDER BY created_at DESC'
         );
         return result.rows;
     } catch (error) {
@@ -200,8 +200,9 @@ const deleteUser = async (username, adminId, ipAddress) => {
             throw new AppError('Username is required', 400);
         }
         
+        // Soft delete - tandai user sebagai tidak aktif
         const result = await db.query(
-            'DELETE FROM users WHERE username = $1 RETURNING user_id, username',
+            'UPDATE users SET deleted_at = NOW(), is_active = false WHERE username = $1 RETURNING user_id, username',
             [username]
         );
 
@@ -212,8 +213,10 @@ const deleteUser = async (username, adminId, ipAddress) => {
         // Log user deletion
         await db.query(
             'INSERT INTO activity_logs (user_id, action, details, ip_address) VALUES ($1, $2, $3, $4)',
-            [adminId, 'DELETE_USER', `Deleted user: ${username}`, ipAddress]
+            [adminId, 'DELETE_USER', `Soft deleted user: ${username}`, ipAddress]
         );
+
+        return result.rows[0];
     } catch (error) {
         logger.error('Delete user error:', error);
         if (error instanceof AppError) {
@@ -230,9 +233,14 @@ const deleteUser = async (username, adminId, ipAddress) => {
 const getActivityLogs = async () => {
     try {
         const result = await db.query(
-            `SELECT al.*, u.username 
+            `SELECT al.*, 
+                    CASE 
+                        WHEN u.username IS NOT NULL THEN u.username 
+                        ELSE '[Deleted User]' 
+                    END as username
              FROM activity_logs al 
-             JOIN users u ON al.user_id = u.user_id
+             LEFT JOIN users u ON al.user_id = u.user_id 
+                AND (u.deleted_at IS NULL OR u.is_active = true)
              ORDER BY al.created_at DESC 
              LIMIT 100`
         );

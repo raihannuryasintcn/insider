@@ -6,15 +6,15 @@ import {
   CardHeader,
   CardTitle,
   CardFooter,
-} from "@/components/ui/card"
-
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+
 
 const FilterPanel = ({
   filters,
@@ -28,21 +28,21 @@ const FilterPanel = ({
       key: "is_jartup",
       label: "JARTUP",
       options: [
-        { value: "true", label: "Yes" },
-        { value: "false", label: "No" },
+        { value: "true", label: "Ya" }, // Terjemahkan
+        { value: "false", label: "Tidak" }, // Terjemahkan
       ],
     },
     {
       key: "is_jartaplok",
       label: "JARTAPLOK",
       options: [
-        { value: "true", label: "Yes" },
-        { value: "false", label: "No" },
+        { value: "true", label: "Ya" }, // Terjemahkan
+        { value: "false", label: "Tidak" }, // Terjemahkan
       ],
     },
     {
       key: "internal_risk_profile",
-      label: "Risk Profile",
+      label: "Profil Risiko", // Terjemahkan
       options: getUniqueValues("internal_risk_profile").map(val => ({
         value: val,
         label: val
@@ -50,7 +50,7 @@ const FilterPanel = ({
     },
     {
       key: "collection_rate",
-      label: "Collection Rate",
+      label: "Tingkat Koleksi", // Terjemahkan
       options: getUniqueValues("collection_rate").map(val => ({
         value: val,
         label: val
@@ -58,7 +58,7 @@ const FilterPanel = ({
     },
     {
       key: "coverage_customer",
-      label: "Coverage Customer",
+      label: "Cakupan Pelanggan", // Terjemahkan
       options: getUniqueValues("coverage_customer").map(val => ({
         value: val,
         label: val
@@ -66,7 +66,7 @@ const FilterPanel = ({
     },
     {
       key: "headquarters",
-      label: "Territory",
+      label: "Wilayah", // Terjemahkan
       options: getUniqueValues("headquarters")
         .sort((a, b) => {
           const numA = parseInt(a.replace("TR", ""));
@@ -87,8 +87,7 @@ const FilterPanel = ({
   return (
     <Card className="mb-4">
       <CardHeader>
-        <CardTitle>Filters</CardTitle>
-        <CardDescription>Filter ISP berdasarkan parameter yang diinginkan</CardDescription>
+        <CardTitle>Filter</CardTitle> {/* Terjemahkan */}
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-3 gap-4">
@@ -115,15 +114,10 @@ const FilterPanel = ({
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
         <Button
-          onClick={() => setShowFilterPanel(false)}
-        >
-          Apply Filters
-        </Button>
-        <Button
           onClick={resetFilters}
           variant="outline"
         >
-          Reset Filters
+          Reset Filter {/* Terjemahkan */}
         </Button>
       </CardFooter>
     </Card>

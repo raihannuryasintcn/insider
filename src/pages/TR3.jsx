@@ -1,12 +1,14 @@
-export default function TR3() {
+import PowerBiReportViewer from '../components/custom/PowerBiReportViewer';
+
+// URL laporan Power BI untuk TR3
+const TR3_REPORT_URL = "https://app.powerbi.com/reportEmbed?reportId=ebdc0433-5caa-42bb-8fe6-a0af65ec0da4&autoAuth=true&ctid=48deb303-1702-4292-bf20-187c4e25d11f&pageName=418346787d7d21134f08";
+
+/**
+ * Halaman untuk menampilkan Laporan TR3 dari Power BI.
+ */
+
+export default function TR3Page() {
   return (
-    <div className="w-full aspect-[16/10.7] pb-4 ">
-      <iframe
-        src="https://app.powerbi.com/reportEmbed?reportId=3ab413f5-fbe6-4da1-8652-db98ade9759b&autoAuth=true&ctid=48deb303-1702-4292-bf20-187c4e25d11f"
-        className="w-full h-full border-0 rounded-lg"
-        allowFullScreen="true"
-        style={{ touchAction: "none" }}
-      ></iframe>
-    </div>
+    <PowerBiReportViewer reportUrl={TR3_REPORT_URL} />
   );
 }

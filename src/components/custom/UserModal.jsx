@@ -1,6 +1,20 @@
 import React from 'react';
 import { X, User, Lock, Shield } from 'lucide-react';
-import { Loading } from './components/custom/loading';
+import Loading from './Loading'; // Perbaiki import path
+
+/**
+ * Komponen modal untuk membuat atau mengedit pengguna.
+ *
+ * @param {object} props - Properti komponen.
+ * @param {boolean} props.showModal - Menentukan apakah modal ditampilkan.
+ * @param {object|null} props.selectedUser - Objek pengguna yang sedang diedit, atau null jika membuat baru.
+ * @param {object} props.formData - Data formulir saat ini.
+ * @param {object} props.formErrors - Objek kesalahan validasi formulir.
+ * @param {boolean} props.isSubmitting - Menunjukkan apakah formulir sedang dalam proses submit.
+ * @param {function} props.handleInputChange - Fungsi handler untuk perubahan input.
+ * @param {function} props.handleSubmit - Fungsi handler untuk submit formulir.
+ * @param {function} props.closeModal - Fungsi untuk menutup modal.
+ */
 
 const UserModal = ({
   showModal,
@@ -21,7 +35,7 @@ const UserModal = ({
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-blue-600 flex items-center">
             <User className="h-5 w-5 mr-2" />
-            {selectedUser ? 'Edit User' : 'Register New User'}
+            {selectedUser ? 'Edit Pengguna' : 'Daftarkan Pengguna Baru'} {/* Terjemahkan */}
           </h3>
           <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">
             <X className="h-6 w-6" />
@@ -32,7 +46,7 @@ const UserModal = ({
           {/* Username */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Username
+              Nama Pengguna {/* Terjemahkan */}
             </label>
             <input
               type="text"
@@ -53,7 +67,7 @@ const UserModal = ({
           {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {selectedUser ? 'New Password (Leave blank to keep current)' : 'Password'}
+              {selectedUser ? 'Kata Sandi Baru (Biarkan kosong untuk tetap)' : 'Kata Sandi'} {/* Terjemahkan */}
             </label>
             <input
               type="password"
@@ -73,7 +87,7 @@ const UserModal = ({
           {/* Role */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Role
+              Peran {/* Terjemahkan */}
             </label>
             <select
               name="role"
@@ -84,7 +98,7 @@ const UserModal = ({
               }`}
               required
             >
-              <option value="user">User</option>
+              <option value="user">Pengguna</option> {/* Terjemahkan */}
               <option value="administrator">Administrator</option>
             </select>
             {formErrors.role && (
@@ -100,7 +114,7 @@ const UserModal = ({
               className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
               disabled={isSubmitting}
             >
-              Cancel
+              Batal {/* Terjemahkan */}
             </button>
             <button
               type="submit"
@@ -109,11 +123,11 @@ const UserModal = ({
             >
               {isSubmitting ? (
                 <>
-                <Loading></Loading>
-                  Processing...
+                  <Loading className="mr-2" /> {/* Tambahkan margin kanan */}
+                  Memproses... {/* Terjemahkan */}
                 </>
               ) : (
-                selectedUser ? 'Update User' : 'Create User'
+                selectedUser ? 'Perbarui Pengguna' : 'Buat Pengguna' /* Terjemahkan */
               )}
             </button>
           </div>
