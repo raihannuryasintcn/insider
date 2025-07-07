@@ -1,5 +1,0 @@
-CREATE TABLE "tr_code" (
-	"id" SERIAL NOT NULL,
-	"tr_code" VARCHAR NULL DEFAULT NULL
-)
-;
