@@ -184,7 +184,7 @@ export default function CompactISPFunnel() {
   );
 
   return (
-    <div className="mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className="mx-auto p-6 min-h-screen">
       {/* Header Section */}
       <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center">

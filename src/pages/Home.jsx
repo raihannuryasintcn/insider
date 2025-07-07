@@ -148,7 +148,7 @@ export default function HomePage() {
   }
 
   return (
-    <div>
+    <div className='w-full h-[calc(100vh-90px)]'>
       <div className="flex flex-row items-center justify-between mb-4">
         <span className="text-2xl font-bold text-gray-800">Peta Nasional ISP</span>
         <p className="text-sm text-gray-500 ml-2 justify-center my-auto font-semibold">Nasional - Last Updated W4 Mei 25</p>
