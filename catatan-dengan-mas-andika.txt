@@ -1,0 +1,24 @@
+monitoring kontrak --> dikasih "notess"
+
+drop dipisah bukan bagian dari funnel
+
+pencatatan kemampuan approach per bulan
+
+memulai mencatat historikal per status f funel
+
+quick win: pencatatn histori per isp
+
+ujungnya--> 
+visualisasi dashboard
+detail
+layer 0 TIF funnel stages
+layer 1 isp detail detail isp
+template excel fix
+
+semua data-data baik funnel notes. dicatat di log
+
+yang perlu dibuat:
+udah berapa sih yang berkontrak? tolong tampilkan di dashboard
+alur logic
+desain visua website layer 0 dan layer 1
+template excel fix
