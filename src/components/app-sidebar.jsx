@@ -1,4 +1,4 @@
-import { Map, Home, Download, Search, UserRound, ChevronUp, Users, ScrollText, ChartNoAxesCombined } from "lucide-react" // Added Users and ScrollText icons
+import { Map, Home, Download, Search, UserRound, ChevronUp, Users, ScrollText, ChartNoAxesCombined, Funnel } from "lucide-react" // Added Users and ScrollText icons
 import { useLocation } from "react-router-dom";
 
 
@@ -37,14 +37,6 @@ const dashboard = [
         icon: Home,
     },
     {
-        title: "Funnel",
-        url: "/funnel",
-        icon: ChartNoAxesCombined,
-    }
-]
-
-const powerbi = [
-    {
         title: "TR1",
         url: "/tr1",
         icon: Map,
@@ -64,6 +56,19 @@ const powerbi = [
         url: "/tr4",
         icon: Map,
     }
+]
+
+const funnel = [
+    {
+        title: "Funnel",
+        url: "/funnel",
+        icon: ChartNoAxesCombined,
+    },
+    {
+        title: "Description",
+        url: "/funnel-desc",
+        icon: Funnel,
+    },
 ]
 
 const danlainlain = [
@@ -140,10 +145,10 @@ export function AppSidebar() {
                 </SidebarGroup>
 
                 <SidebarGroup>
-                    <SidebarGroupLabel>Power BI</SidebarGroupLabel>
+                    <SidebarGroupLabel>Funnel</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {powerbi.map((item) => {
+                            {funnel.map((item) => {
                                 const isActive = location.pathname === item.url;
 
                                 return (

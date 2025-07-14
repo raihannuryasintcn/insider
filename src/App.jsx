@@ -11,6 +11,8 @@ import LoginPage from './pages/Login';
 import UserManagementPage from './pages/UserManagement';
 import ActivityLogsPage from './pages/ActivityLogs';   
 import FunnelPage from './pages/Funnel'; 
+import FunnelDescPage from './pages/FunnelDesc'; 
+
 import { AuthProvider, ProtectedRoute, AdminProtectedRoute } from './auth/Auth';
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
                 <Route path='/list-isp' element={<ListIspPage />} />
                 <Route path='/download' element={<DownloadPage />} />
                 <Route path='/funnel' element={<FunnelPage />} />
+                <Route path='/funnel-desc' element={<FunnelDescPage />} />
 
                 {/* Admin Protected Routes */}
                 <Route element={<AdminProtectedRoute />}>

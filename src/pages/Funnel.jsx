@@ -5,23 +5,12 @@ import { Input } from '@/components/ui/input';
 import { BarChart3, Search, Plus, Upload, X, File, CheckCircle, TrendingUp, Users, Calendar, Target } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 
-const stageMapping = {
-  F0: 'Lead Generation',
-  F1: 'Initial Contact',
-  F2: 'Needs Assessment',
-  F3: 'Proposal Preparation',
-  F4: 'Negotiation',
-  F5: 'Contract Signing',
-  F6: 'Service Deployment',
-  F7: 'Service Monitoring',
-  F8: 'Customer Support',
-};
 
 const defaultFunnelStructure = {
   'Pre-Sales': ['F0', 'F1', 'F2', 'F3'],
   'Sales': ['F4', 'F5'],
-  'Delivery': ['F6'],
-  'After-Sales': ['F7', 'F8'],
+  'Delivery': ['Delivery'],
+  'After-Sales': ['BillCo', 'Assurance'],
 };
 
 const stageColors = {
@@ -40,15 +29,15 @@ const stageIcons = {
 
 const createDefaultFunnelData = () => {
   const stageData = {
-    F0: { count: 45, title: 'Lead Generation' },
-    F1: { count: 38, title: 'Initial Contact' },
-    F2: { count: 32, title: 'Needs Assessment' },
-    F3: { count: 28, title: 'Proposal Preparation' },
-    F4: { count: 22, title: 'Negotiation' },
-    F5: { count: 18, title: 'Contract Signing' },
-    F6: { count: 15, title: 'Service Deployment' },
-    F7: { count: 12, title: 'Service Monitoring' },
-    F8: { count: 8, title: 'Customer Support' }
+    F0: { count: 82, title: 'Lead' },
+    F1: { count: 72, title: 'Opportunity' },
+    F2: { count: 24, title: 'Feasibility Study' },
+    F3: { count: 15, title: 'Project Assesment' },
+    F4: { count: 26, title: 'Agreement' },
+    F5: { count: 30, title: 'Order Fulfillment' },
+    Delivery: { count: 0, title: 'Delivery' },
+    BillCo: { count: 0, title: 'BillCo' },
+    Assurance: { count: 0, title: 'Assurance' }
   };
 
   return Object.entries(defaultFunnelStructure).map(([stage, ids]) => ({
@@ -64,7 +53,7 @@ const createDefaultFunnelData = () => {
 
 export default function CompactISPFunnel() {
   const [funnelData, setFunnelData] = useState(createDefaultFunnelData());
-  const [totalFunnel, setTotalFunnel] = useState(218); // Total dari semua stage
+  const [totalFunnel, setTotalFunnel] = useState(249); // Total dari semua stage
   const [selectedStage, setSelectedStage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -75,18 +64,18 @@ export default function CompactISPFunnel() {
   const fileInputRef = useRef(null);
 
   const sampleISPData = [
-    { no: 1, namaISP: 'ConnectNet Solutions', layanan: 'Fiber Premium', fyRev: '485M', territory: 'Jakarta Pusat', am: 'Andi Wijaya', notes: 'Strategic partnership discussions ongoing' },
-    { no: 2, namaISP: 'GlobalLink Communications', layanan: 'Wireless Enterprise', fyRev: '392M', territory: 'Surabaya', am: 'Sinta Dewi', notes: 'Expansion to 5 new cities planned' },
-    { no: 3, namaISP: 'MetroNet Indonesia', layanan: 'Cloud Connect', fyRev: '347M', territory: 'Bandung', am: 'Rudi Hartono', notes: 'Technical evaluation phase completed' },
-    { no: 4, namaISP: 'VelocityNet Corp', layanan: 'Dedicated Internet', fyRev: '298M', territory: 'Medan', am: 'Lisa Pratiwi', notes: 'Contract terms under review' },
-    { no: 5, namaISP: 'DataStream Networks', layanan: 'MPLS Premium', fyRev: '256M', territory: 'Makassar', am: 'Budi Setiawan', notes: 'Pilot deployment successful' },
-    { no: 6, namaISP: 'SpeedLink Technologies', layanan: 'Metro Ethernet', fyRev: '234M', territory: 'Semarang', am: 'Maya Sari', notes: 'Infrastructure integration in progress' },
-    { no: 7, namaISP: 'UltraConnect ISP', layanan: 'Satellite Backup', fyRev: '198M', territory: 'Balikpapan', am: 'Agus Prasetyo', notes: 'Service level agreements finalized' },
-    { no: 8, namaISP: 'TechnoNet Services', layanan: 'Hybrid Network', fyRev: '167M', territory: 'Palembang', am: 'Dewi Anggraini', notes: 'Monthly performance review scheduled' },
-    { no: 9, namaISP: 'NextGen Broadband', layanan: 'SD-WAN Solution', fyRev: '145M', territory: 'Denpasar', am: 'Hendra Kusuma', notes: 'Customer satisfaction survey completed' },
-    { no: 10, namaISP: 'DigiLink Networks', layanan: 'IoT Connectivity', fyRev: '123M', territory: 'Yogyakarta', am: 'Ratna Wulan', notes: 'Ongoing support and maintenance' },
-    { no: 11, namaISP: 'CloudStream ISP', layanan: 'Virtual Private Network', fyRev: '109M', territory: 'Malang', am: 'Doni Setiawan', notes: 'Security audit in progress' },
-    { no: 12, namaISP: 'FiberMax Solutions', layanan: 'Enterprise Hosting', fyRev: '87M', territory: 'Solo', am: 'Fitri Handayani', notes: 'Quarterly business review due' }
+    // { no: 1, namaISP: 'ConnectNet Solutions', layanan: 'Fiber Premium', fyRev: '485M', territory: 'Jakarta Pusat', am: 'Andi Wijaya', notes: 'Strategic partnership discussions ongoing' },
+    // { no: 2, namaISP: 'GlobalLink Communications', layanan: 'Wireless Enterprise', fyRev: '392M', territory: 'Surabaya', am: 'Sinta Dewi', notes: 'Expansion to 5 new cities planned' },
+    // { no: 3, namaISP: 'MetroNet Indonesia', layanan: 'Cloud Connect', fyRev: '347M', territory: 'Bandung', am: 'Rudi Hartono', notes: 'Technical evaluation phase completed' },
+    // { no: 4, namaISP: 'VelocityNet Corp', layanan: 'Dedicated Internet', fyRev: '298M', territory: 'Medan', am: 'Lisa Pratiwi', notes: 'Contract terms under review' },
+    // { no: 5, namaISP: 'DataStream Networks', layanan: 'MPLS Premium', fyRev: '256M', territory: 'Makassar', am: 'Budi Setiawan', notes: 'Pilot deployment successful' },
+    // { no: 6, namaISP: 'SpeedLink Technologies', layanan: 'Metro Ethernet', fyRev: '234M', territory: 'Semarang', am: 'Maya Sari', notes: 'Infrastructure integration in progress' },
+    // { no: 7, namaISP: 'UltraConnect ISP', layanan: 'Satellite Backup', fyRev: '198M', territory: 'Balikpapan', am: 'Agus Prasetyo', notes: 'Service level agreements finalized' },
+    // { no: 8, namaISP: 'TechnoNet Services', layanan: 'Hybrid Network', fyRev: '167M', territory: 'Palembang', am: 'Dewi Anggraini', notes: 'Monthly performance review scheduled' },
+    // { no: 9, namaISP: 'NextGen Broadband', layanan: 'SD-WAN Solution', fyRev: '145M', territory: 'Denpasar', am: 'Hendra Kusuma', notes: 'Customer satisfaction survey completed' },
+    // { no: 10, namaISP: 'DigiLink Networks', layanan: 'IoT Connectivity', fyRev: '123M', territory: 'Yogyakarta', am: 'Ratna Wulan', notes: 'Ongoing support and maintenance' },
+    // { no: 11, namaISP: 'CloudStream ISP', layanan: 'Virtual Private Network', fyRev: '109M', territory: 'Malang', am: 'Doni Setiawan', notes: 'Security audit in progress' },
+    // { no: 12, namaISP: 'FiberMax Solutions', layanan: 'Enterprise Hosting', fyRev: '87M', territory: 'Solo', am: 'Fitri Handayani', notes: 'Quarterly business review due' }
   ];
   useEffect(() => {
     // Simulasi loading data - dalam implementasi nyata akan fetch dari API
@@ -193,9 +182,9 @@ export default function CompactISPFunnel() {
               <BarChart3 className="h-8 w-8 text-white" />
             </div>
             <div className="ml-6">
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">ISP Pipeline Overview</p>
+              <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Overview Status Funnel</p>
               <h1 className="text-4xl font-bold text-gray-900 mt-1">{totalFunnel.toLocaleString()}</h1>
-              <p className="text-sm text-gray-600 mt-1">Total opportunities in pipeline</p>
+              <p className="text-sm text-gray-600 mt-1">Total</p>
             </div>
           </div>
           <div className='flex flex-col gap-2 items-center'>
