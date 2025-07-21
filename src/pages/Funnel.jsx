@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { BarChart3, Search, Plus, Upload, X, File, CheckCircle, TrendingUp, Users, Calendar, Target } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
+import funnelData from './funnel.json'; // Assuming you have a JSON file with funnel data
 
 
 const defaultFunnelStructure = {
