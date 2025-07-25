@@ -5,7 +5,7 @@ export default function FunnelDescPage() {
         <h1 className="text-4xl font-bold">TIF Sales Funnels</h1>
         <p className="">Tahapan-tahapan Sales Funnels di Telkom Infrastruktur Indonesia</p>
       </div>
-      <div style={{ backgroundImage: "url('/funneldesc.svg')" }} className="w-full bg-contain bg-no-repeat h-[105vh] bg-center"></div>
+      <div style={{ backgroundImage: "url('/funneldesc-new.svg')" }} className="w-full bg-contain bg-no-repeat h-[105vh] bg-center"></div>
     </div>
   );
 }
