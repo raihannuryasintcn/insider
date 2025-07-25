@@ -55,7 +55,7 @@ function MarketShareChart() {
     return (
         <div
             onClick={() => setExpanded(!expanded)}
-            className={`z-[9999] fixed bottom-24 left-51 bg-blue-100 rounded-md text-gray-700 border-2 border-blue-100 cursor-pointer shadow-md transition-all duration-300 overflow-hidden flex flex-col items-center ${
+            className={`z-[9999] bottom-24 left-51 bg-blue-100 rounded-md text-gray-700 border-2 border-blue-100 cursor-pointer shadow-md transition-all duration-300 overflow-hidden flex flex-col items-center ${
                 expanded ? 'w-[450px] h-[400px] justify-center' : 'w-[140px] h-[140px] pt-2 justify-start'
             } z-[9999]`} // <-- add this
         >
