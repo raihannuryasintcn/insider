@@ -1,4 +1,4 @@
-import { Map, Home, Download, Search, UserRound, ChevronUp, Users, ScrollText, ChartNoAxesCombined, Funnel } from "lucide-react" // Added Users and ScrollText icons
+import { Map, Home, Download, Search, UserRound, ChevronUp, Users, ScrollText, ChartNoAxesCombined, Funnel, Info } from "lucide-react" // Added Users and ScrollText icons
 import { useLocation } from "react-router-dom";
 
 
@@ -81,7 +81,12 @@ const danlainlain = [
         title: "Download",
         url: "/download",
         icon: Download,
-    }
+    },
+    {
+        title: "About",
+        url: "/about",
+        icon: Info,
+    },
 ]
 
 const adminLinks = [
