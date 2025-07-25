@@ -182,7 +182,7 @@ export default function HomePage() {
       </div>
       {/* Wrap MapContainer in a responsive aspect ratio container */}
       <div className="w-full h-[calc(100%-7%)] relative">
-        <MapContainer center={[-2.0, 110.0]} zoomControl={false} zoom={5} className="w-full h-full rounded-lg">
+        <MapContainer center={[-2.0, 115.0]} zoomControl={false} zoom={5} className="w-full h-full rounded-lg">
           <TileLayer
             attribution='&copy; OpenStreetMap contributors'
             url={MAP_TILE_URL}
