@@ -2,12 +2,34 @@ import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import LegendControl from '../components/Map/LegendControl';
 import TotalIspControl from '../components/map/HoverControl';
+import DropdownControl from '../components/map/DropdownControl';
+import MarketShareControl from '../components/map/MarketShareChartControl';
 import Loading from '../components/custom/Loading'; // Asumsi ada komponen loading
 import { Card, CardContent } from '../components/ui/card'; // Asumsi ada komponen Card dari shadcn/ui
 import { useEffect, useState } from 'react';
+import internetServiceProviders from './isp.json';
+import { Marker, Tooltip } from 'react-leaflet';
+import { divIcon } from "leaflet";
 
 // URL untuk TileLayer peta
 const MAP_TILE_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+
+const createCustomIcon = (color) => {
+    return divIcon({
+        html: `<div class="w-[30px] h-[30px] rounded-full border border-gray-800 bg-${color}"></div>`,
+        className: 'custom-div-icon',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    })
+}
+
+const offsetPosition = (lat, lng, index, total) => {
+  const radius = 0.03; // atur di sini (misal 0.01 = 1000 meter)
+  const angle = (index / total) * 2 * Math.PI; // distribusi melingkar
+  const offsetLat = lat + radius * Math.sin(angle);
+  const offsetLng = lng + radius * Math.cos(angle);
+  return [offsetLat, offsetLng];
+};
 
 const useMapData = () => {
   const [geoData, setGeoData] = useState(null);
@@ -100,8 +122,13 @@ const useMapData = () => {
 };
 
 
+
 export default function HomePage() {
   const { geoData, totalIsp, totalJartup, totalJartaplok, isLoading, error } = useMapData();
+  const [selectedProvider, setSelectedProvider] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+
 
   const styleByFeature = (feature) => ({
     color: '#333',
@@ -154,20 +181,46 @@ export default function HomePage() {
         <p className="text-sm text-gray-500 ml-2 justify-center my-auto font-semibold">Nasional - Last Updated W4 Mei 25</p>
       </div>
       {/* Wrap MapContainer in a responsive aspect ratio container */}
-      <div className="w-full h-[calc(100%-7%)]">
-        <MapContainer center={[-1.5, 117.5]} zoomControl={false} zoom={5} className="w-full h-full rounded-lg">
+      <div className="w-full h-[calc(100%-7%)] relative">
+        <MapContainer center={[-2.0, 110.0]} zoomControl={false} zoom={5} className="w-full h-full rounded-lg">
           <TileLayer
             attribution='&copy; OpenStreetMap contributors'
             url={MAP_TILE_URL}
           />
+          {internetServiceProviders
+                    .filter(p => selectedProvider.includes(p.name))
+                    .flatMap((p) =>
+                        p.locations.map((location, locationIndex) => (
+                            <Marker
+                                key={`${p.name}-${locationIndex}`}
+                                position={offsetPosition(location.lat, location.lng, locationIndex, p.locations.length)}
+                                icon={createCustomIcon(p.color)}
+                            >
+                                <Tooltip direction="bottom" offset={[0, 10]} opacity={1} permanent={false}> {/*permanent={false} to show tooltip on hover*/}
+                                    <div className="flex flex-col items-center">
+                                        <div className="font-semibold text-sm mb-0.5 text-gray-800">
+                                            {p.name}
+
+                                        </div>
+                                        <div className="text-xs text-gray-700">
+                                            {location.city}
+                                        </div>
+                                    </div>
+                                </Tooltip>
+                            </Marker>
+                        ))
+                    )}
+                {/* </MarkerClusterGroup> */}
           {geoData && (
             <>
               <GeoJSON data={geoData} style={styleByFeature} onEachFeature={onEachFeature} />
               <LegendControl />
               <TotalIspControl totalIsp={totalIsp} totalJartup={totalJartup} totalJartaplok={totalJartaplok} />
+              <DropdownControl providers={internetServiceProviders} selected={selectedProvider} setSelected={setSelectedProvider} />
+              <MarketShareControl />
             </>
           )}
-        </MapContainer>
+        </MapContainer>            
       </div>
     </div>
   );
