@@ -1,4 +1,4 @@
-import { Map, Home, Download, Search, UserRound, ChevronUp, Users, ScrollText, ChartNoAxesCombined, Funnel, Info } from "lucide-react" // Added Users and ScrollText icons
+import { Map, Download, Search, UserRound, ChevronUp, Users, ScrollText, ChartNoAxesCombined, Funnel, Info, LandPlot, Speech } from "lucide-react" // Added Users and ScrollText icons
 import { useLocation } from "react-router-dom";
 
 
@@ -30,11 +30,11 @@ import { useAuth } from "@/auth/Auth" // Import the useAuth hook to access authe
 
 
 // Menu items.
-const dashboard = [
+const market = [
     {
-        title: "Home",
+        title: "ISP Nasional",
         url: "/",
-        icon: Home,
+        icon: LandPlot,
     },
     {
         title: "TR1",
@@ -55,23 +55,7 @@ const dashboard = [
         title: "TR4",
         url: "/tr4",
         icon: Map,
-    }
-]
-
-const funnel = [
-    {
-        title: "Funnel",
-        url: "/funnel",
-        icon: ChartNoAxesCombined,
     },
-    {
-        title: "Description",
-        url: "/funnel-desc",
-        icon: Funnel,
-    },
-]
-
-const danlainlain = [
     {
         title: "List ISP",
         url: "/list-isp",
@@ -82,11 +66,28 @@ const danlainlain = [
         url: "/download",
         icon: Download,
     },
+]
+
+const funnel = [
     {
-        title: "About",
-        url: "/about",
-        icon: Info,
+        title: "Description",
+        url: "/funnel-desc",
+        icon: Funnel,
     },
+    {
+        title: "Funnel",
+        url: "/funnel",
+        icon: ChartNoAxesCombined,
+    }
+
+]
+
+const faq = [
+    {
+        title: "FAQ",
+        url: "/faq",
+        icon: Speech,
+    }
 ]
 
 const adminLinks = [
@@ -102,6 +103,13 @@ const adminLinks = [
     }
 ]
 
+const aboutUs = [
+    {
+        title: "About Us",
+        url: "/about-us",
+        icon: Info,
+    }
+]
 
 export function AppSidebar() {
     const { user, logout } = useAuth();
@@ -118,8 +126,8 @@ export function AppSidebar() {
             <SidebarHeader className={"bg-white p-4"}>
                 <SidebarMenu>
                     <SidebarMenuItem className=" border-b-2 py-2">
-                        <div className="flex items-center justify-center gap-2">
-                            <img width={"25px"} src="favicon.ico" alt="" />
+                        <div className="flex items-center justify-center gap-1">
+                            <img width={"33px"} src="insider-icon.svg" alt="" />
                             <img width={"90px"} src="insider-text.svg" alt="" />
                         </div>
                     </SidebarMenuItem>
@@ -128,16 +136,20 @@ export function AppSidebar() {
 
             <SidebarContent className={"bg-white"}>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+                    <SidebarGroupLabel>Market</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {dashboard.map((item) => {
+                            {market.map((item) => {
                                 const isActive = location.pathname === item.url;
+                                const withExtraPadding = ["TR1", "TR2","TR3","TR4"].includes(item.title);
 
                                 return (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild isActive={isActive}>
-                                            <Link to={item.url}>
+                                            <Link
+                                                to={item.url}
+                                                className={withExtraPadding ? "pl-6" : ""}
+                                            >
                                                 <item.icon />
                                                 <span>{item.title}</span>
                                             </Link>
@@ -146,11 +158,12 @@ export function AppSidebar() {
                                 );
                             })}
                         </SidebarMenu>
+
                     </SidebarGroupContent>
                 </SidebarGroup>
 
                 <SidebarGroup>
-                    <SidebarGroupLabel>Funnel</SidebarGroupLabel>
+                    <SidebarGroupLabel>Sales Funnel</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {funnel.map((item) => {
@@ -172,11 +185,35 @@ export function AppSidebar() {
                 </SidebarGroup>
                 <SidebarGroup>
 
-                    <SidebarGroupLabel>Tools Lainnya</SidebarGroupLabel>
+                    <SidebarGroupLabel>FAQ</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenu>
-                                {danlainlain.map((item) => {
+                                {faq.map((item) => {
+                                    const isActive = location.pathname === item.url;
+
+                                    return (
+                                        <SidebarMenuItem key={item.title}>
+                                            <SidebarMenuButton asChild isActive={isActive}>
+                                                <Link to={item.url}>
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    );
+                                })}
+                            </SidebarMenu>
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+                <SidebarGroup>
+
+                    <SidebarGroupLabel>About Us</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            <SidebarMenu>
+                                {aboutUs.map((item) => {
                                     const isActive = location.pathname === item.url;
 
                                     return (
@@ -196,7 +233,7 @@ export function AppSidebar() {
                 </SidebarGroup>
                 {user?.role === 'administrator' && (
                     <SidebarGroup>
-                        <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
+                        <SidebarGroupLabel>Others</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {adminLinks.map((item) => {
