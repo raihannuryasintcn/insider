@@ -13,6 +13,7 @@ import ActivityLogsPage from './pages/ActivityLogs';
 import FunnelPage from './pages/Funnel'; 
 import FunnelDescPage from './pages/FunnelDesc'; 
 import AboutPage from './pages/About';
+import FAQPage from './pages/FAQ';
 
 import { AuthProvider, ProtectedRoute, AdminProtectedRoute } from './auth/Auth';
 
@@ -33,7 +34,8 @@ function App() {
                 <Route path='/download' element={<DownloadPage />} />
                 <Route path='/funnel' element={<FunnelPage />} />
                 <Route path='/funnel-desc' element={<FunnelDescPage />} />
-                <Route path='/about' element={<AboutPage />} />
+                <Route path='/faq' element={<FAQPage />} />
+                <Route path='/about-us' element={<AboutPage />} />
 
                 {/* Admin Protected Routes */}
                 <Route element={<AdminProtectedRoute />}>

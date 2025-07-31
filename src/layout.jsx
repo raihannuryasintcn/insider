@@ -15,7 +15,7 @@ export default function Layout() {
           <Separator orientation="vertical" className="mr-2 h-4" />
           <AppBreadcrumb />
         </header>
-        <main className="px-4 py-4 bg-white min-h-screen">
+        <main className="px-4 py-4 bg-white min-h-[90vh]">
           {/* area konten utama yang diisi oleh rute yang cocok melalui `Outlet`. */}
           <Outlet />
         </main>

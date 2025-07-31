@@ -134,7 +134,7 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent className={"bg-white"}>
+            <SidebarContent className={"bg-white overflow-hidden"}>
                 <SidebarGroup>
                     <SidebarGroupLabel>Market</SidebarGroupLabel>
                     <SidebarGroupContent>
